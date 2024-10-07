@@ -13,11 +13,7 @@
         android:theme="@style/Theme.FocusFlow"
         tools:targetApi="31">
         <activity
-            android:name=".EditPage"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".MainPage"
+            android:name=".SignUp"
             android:exported="true"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
@@ -26,6 +22,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SignIn"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+        <activity
+            android:name=".EditPage"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".MainPage"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat"></activity>
     </application>
 
 </manifest>

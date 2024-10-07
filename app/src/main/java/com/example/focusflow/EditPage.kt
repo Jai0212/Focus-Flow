@@ -21,9 +21,9 @@ class EditPage : AppCompatActivity() {
 
         // Sample app list
         val appList = listOf(
-            App(R.drawable.instagram, "App 1", true),
-            App(R.drawable.snapchat, "App 2", false),
-            App(R.drawable.snapchat, "App 3", true)
+            App("App 1", R.drawable.instagram, true),
+            App("App 2", R.drawable.snapchat, false),
+            App("App 3", R.drawable.snapchat, true)
         )
 
         val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)

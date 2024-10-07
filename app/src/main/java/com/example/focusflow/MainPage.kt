@@ -37,5 +37,6 @@ class MainPage : AppCompatActivity() {
             val intent = Intent(this, EditPage::class.java)
             startActivity(intent)
         }
+
     }
 }
