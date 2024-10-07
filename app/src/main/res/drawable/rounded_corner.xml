@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color of the LinearLayout -->
+    <solid android:color="#ABCDEF" /> <!-- Replace with your desired color -->
+
+    <!-- Border properties -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/black" /> <!-- Border color, replace with your desired color -->
+
+    <corners android:radius="20dp" /> <!-- Set the radius you want -->
+</shape>

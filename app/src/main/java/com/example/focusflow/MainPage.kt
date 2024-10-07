@@ -1,6 +1,8 @@
 package com.example.focusflow
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,5 +30,12 @@ class MainPage : AppCompatActivity() {
         val rvBlockedAppsRecyclerView: RecyclerView = findViewById(R.id.rvBlockedAppsRecyclerView)
         rvBlockedAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvBlockedAppsRecyclerView.adapter =  BlockedAppsRecyclerViewAdapter(images)
+
+        val bMPedit: Button = findViewById(R.id.bMPedit)
+
+        bMPedit.setOnClickListener {
+            val intent = Intent(this, EditPage::class.java)
+            startActivity(intent)
+        }
     }
 }
