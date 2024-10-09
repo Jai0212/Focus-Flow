@@ -30,11 +30,16 @@ class EditPageRecyclerViewAdapter(private val context: Context, private val apps
         holder.appName.text = app.name
 
         // Set button text based on app's activation state
-        holder.toggleButton.text = if (app.isActive) "Deactivate" else "Activate"
+        holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
 
         // Toggle activation state when button is clicked
         holder.toggleButton.setOnClickListener {
-            app.isActive = !app.isActive
+            app.active = !app.active
+            holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
+
+            val databaseManager = DatabaseManager.getInstance()
+            databaseManager.updateAppStateInDatabase(app)
+
             notifyItemChanged(position) // Update the item to reflect the state change
         }
     }

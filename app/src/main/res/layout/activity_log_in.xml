@@ -5,21 +5,28 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/edtEmailLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/edtPasswordLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/buttonSignIn"
+        android:id="@+id/btnLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In" />
+        android:text="Log In" />
+
+    <Button
+        android:id="@+id/btnSwitchSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account, Sign Up!"/>
+
 </LinearLayout>

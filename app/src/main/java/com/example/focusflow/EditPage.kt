@@ -1,6 +1,9 @@
 package com.example.focusflow
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,15 +22,19 @@ class EditPage : AppCompatActivity() {
             insets
         }
 
-        // Sample app list
-        val appList = listOf(
-            App("App 1", R.drawable.instagram, true),
-            App("App 2", R.drawable.snapchat, false),
-            App("App 3", R.drawable.snapchat, true)
-        )
+        val tlEditPage: androidx.appcompat.widget.Toolbar = findViewById(R.id.tlEditPage)
 
-        val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)
-        rvEditPage.layoutManager = LinearLayoutManager(this)
-        rvEditPage.adapter = EditPageRecyclerViewAdapter(this, appList)
+        val imgEditPageBackArrow: ImageView = findViewById(R.id.imgEditPageBackArrow)
+        imgEditPageBackArrow.setOnClickListener {
+            onBackPressed()
+        }
+
+        val databaseManager = DatabaseManager.getInstance()
+
+        databaseManager.getAllApps { allApps ->
+            val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)
+            rvEditPage.layoutManager = LinearLayoutManager(this)
+            rvEditPage.adapter = allApps?.let { EditPageRecyclerViewAdapter(this, it) }
+        }
     }
 }

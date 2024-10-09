@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignIn"
+            android:name=".LogIn"
             android:exported="true"
             android:theme="@style/Theme.AppCompat">
         </activity>
