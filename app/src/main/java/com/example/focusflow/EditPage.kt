@@ -1,5 +1,6 @@
 package com.example.focusflow
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
@@ -22,19 +23,32 @@ class EditPage : AppCompatActivity() {
             insets
         }
 
+        val intent = intent
+        val from = intent.getStringExtra("from")
+
         val tlEditPage: androidx.appcompat.widget.Toolbar = findViewById(R.id.tlEditPage)
 
         val imgEditPageBackArrow: ImageView = findViewById(R.id.imgEditPageBackArrow)
         imgEditPageBackArrow.setOnClickListener {
-            onBackPressed()
+            val intent = Intent(this, MainPage::class.java)
+            startActivity(intent)
         }
 
         val databaseManager = DatabaseManager.getInstance()
 
-        databaseManager.getAllApps { allApps ->
+        if (from == "edit") {
+            databaseManager.getAllApps { allApps ->
+                val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)
+                rvEditPage.layoutManager = LinearLayoutManager(this)
+                rvEditPage.adapter = EditPageRecyclerViewAdapter(this, allApps, "edit")
+            }
+        }
+        else {
+            val installedApps = databaseManager.getInstalledApps(packageManager)
+
             val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)
             rvEditPage.layoutManager = LinearLayoutManager(this)
-            rvEditPage.adapter = EditPageRecyclerViewAdapter(this, allApps)
+            rvEditPage.adapter = EditPageRecyclerViewAdapter(this, installedApps, "add")
         }
     }
 }

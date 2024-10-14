@@ -1,6 +1,8 @@
 package com.example.focusflow
 
 import android.content.ContentValues.TAG
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -106,10 +108,8 @@ class DatabaseManager private constructor() {
 
     fun logOut(onComplete: (Boolean) -> Unit) {
         if (currUser != null) {
-            // Clear the current user session
             currUser = null
-
-            // Notify that the logout was successful
+            Log.d("FIREBASE", "Log Out Successful")
             onComplete(true)
         } else {
             Log.e("FIREBASE", "Null User")
@@ -156,25 +156,49 @@ class DatabaseManager private constructor() {
     }
 
     fun updateAppStateInDatabase(app: App) {
-        currUser?.let { user ->
-            // Get a reference to the "blockedApps" node for the logged-in user
-            val appRef = databaseReference.child("users")
-                .child(user.email.replace(".", ","))
-                .child("blockedApps")
-                .child(app.name)  // Assuming app names are unique
-
-            appRef.child("active").setValue(app.active)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Update successful
-                        println("${app.name} activation state updated to ${app.active}")
-                    } else {
-                        // Handle any errors that occur during the update
-                        println("Failed to update ${app.name} activation state")
-                    }
-                }
+        val user = currUser
+        if (user == null) {
+            Log.e("FIREBASE", "Null User")
+            return
         }
+
+        // Reference to the user's blockedApps list in the database
+        val blockedAppsRef = databaseReference.child("users").child(user.email.replace(".", ",")).child("blockedApps")
+
+        // Retrieve the current list of blocked apps
+        blockedAppsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (appSnapshot in snapshot.children) {
+                        val blockedApp = appSnapshot.getValue(App::class.java)
+
+                        // Find the app by name (or another unique field)
+                        if (blockedApp != null && blockedApp.name == app.name) {
+                            // Toggle the active state
+                            val updatedApp = blockedApp.copy(active = !blockedApp.active)
+
+                            // Update the app in Firebase
+                            blockedAppsRef.child(appSnapshot.key!!).setValue(updatedApp)
+                                .addOnSuccessListener {
+                                    Log.d("FIREBASE", "App state updated successfully: ${updatedApp.name} (active: ${updatedApp.active})")
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e("FIREBASE", "Failed to update app state: ${exception.message}")
+                                }
+                            break
+                        }
+                    }
+                } else {
+                    Log.e("FIREBASE", "No blocked apps found for user")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("FIREBASE", "Failed to retrieve blocked apps: ${error.message}")
+            }
+        })
     }
+
 
     fun addApp(newApp: App) {
         val user = currUser
@@ -218,6 +242,108 @@ class DatabaseManager private constructor() {
                 Log.e("FIREBASE", "Failed to retrieve blocked apps: ${error.message}")
             }
         })
+    }
+
+    fun removeApp(appToRemove: App) {
+        val user = currUser
+        if (user == null) {
+            Log.e("FIREBASE", "Null User")
+            return
+        }
+
+        // Reference to the user's blockedApps list
+        val blockedAppsRef = databaseReference.child("users").child(user.email.replace(".", ",")).child("blockedApps")
+
+        blockedAppsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // List to hold the current blocked apps
+                val blockedAppsList = mutableListOf<App>()
+
+                // If blockedApps already exists, retrieve the current list
+                if (snapshot.exists()) {
+                    for (appSnapshot in snapshot.children) {
+                        val app = appSnapshot.getValue(App::class.java)
+                        if (app != null) {
+                            blockedAppsList.add(app)
+                        }
+                    }
+                }
+
+                // Remove the specified app from the list
+                blockedAppsList.removeIf { it.name == appToRemove.name && it.logo == appToRemove.logo }
+
+                // Update the entire list in Firebase (replace the old one)
+                blockedAppsRef.setValue(blockedAppsList)
+                    .addOnSuccessListener {
+                        Log.d("FIREBASE", "App removed successfully: ${appToRemove.name}")
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("FIREBASE", "Failed to remove app: ${exception.message}")
+                    }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("FIREBASE", "Failed to retrieve blocked apps: ${error.message}")
+            }
+        })
+    }
+
+
+    fun getInstalledApps(packageManager: PackageManager): List<App> {
+        val appsList = mutableListOf<App>()
+
+        // Get the list of installed applications
+        val packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
+        for (packageInfo in packages) {
+            // Filter out system apps (if needed)
+            if (packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null &&
+                (packageInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0) {
+
+                // Get the app name, logo, and other details
+                val appName = packageManager.getApplicationLabel(packageInfo).toString()
+                val appIcon = packageInfo.icon  // App icon as resource ID
+                val app = App(
+                    active = false,  // You can set this based on your logic
+                    logo = appIcon,  // App icon resource
+                    name = appName   // App name
+                )
+                appsList.add(app)
+            }
+        }
+
+        return appsList
+    }
+
+    fun isAppInDatabase(appParam: App, callback: (Boolean) -> Unit) {
+        val appName = appParam.name
+
+        val user = currUser
+        if (user == null) {
+            Log.e("FIREBASE", "Null User")
+            callback(false)
+            return
+        }
+
+        databaseReference.child("users").child(user.email.replace(".", ",")).child("blockedApps")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var appFound = false
+                    for (appSnapshot in snapshot.children) {
+                        val app = appSnapshot.getValue(App::class.java)
+                        if (app != null && app.name == appName) {
+                            appFound = true
+                            break
+                        }
+                    }
+                    callback(appFound) // Return true if found, otherwise false
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("FIREBASE", "Failed to check if app is blocked: ${error.message}")
+                    callback(false) // Return false on error
+                }
+            })
     }
 
 }

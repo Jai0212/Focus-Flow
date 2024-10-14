@@ -67,6 +67,13 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"/>
 
+                <ImageView
+                    android:id="@+id/imgMainPageAddApp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_add"
+                    android:layout_margin="10dp"/>
+
                 <Button
                     android:id="@+id/bMPedit"
                     android:layout_width="wrap_content"
@@ -77,28 +84,13 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBlockedAppsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#734">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBlockedAppsRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"/>
-
-                <ImageView
-                    android:id="@+id/imgMainPageAddApp"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_add"
-                    android:layout_margin="10dp"/>
-
-            </LinearLayout>
+                android:layout_height="100dp"
+                android:background="#784"/>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

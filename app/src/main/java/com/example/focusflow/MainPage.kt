@@ -35,12 +35,16 @@ class MainPage : AppCompatActivity() {
 
         val imgMainPageAddApp: ImageView = findViewById(R.id.imgMainPageAddApp)
         imgMainPageAddApp.setOnClickListener {
-            databaseManager.addApp(App(true, R.drawable.instagram, "Instagram"))
+//            databaseManager.addApp(App(true, R.drawable.instagram, "Instagram"))
+            val intent = Intent(this, EditPage::class.java)
+            intent.putExtra("from", "add")
+            startActivity(intent)
         }
 
         val bMPedit: Button = findViewById(R.id.bMPedit)
         bMPedit.setOnClickListener {
             val intent = Intent(this, EditPage::class.java)
+            intent.putExtra("from", "edit")
             startActivity(intent)
         }
     }

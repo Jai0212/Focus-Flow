@@ -9,7 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class EditPageRecyclerViewAdapter(private val context: Context, private val apps: List<App>) : RecyclerView.Adapter<EditPageRecyclerViewAdapter.ViewHolder>() {
+class EditPageRecyclerViewAdapter(
+    private val context: Context,
+    private val apps: List<App>,
+    private val from: String) : RecyclerView.Adapter<EditPageRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appLogo: ImageView = itemView.findViewById(R.id.imgAppLogo)
@@ -24,21 +27,42 @@ class EditPageRecyclerViewAdapter(private val context: Context, private val apps
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val app = apps[position]
+        val databaseManager = DatabaseManager.getInstance()
 
-        // Set app logo and name
         holder.appLogo.setImageResource(app.logo)
         holder.appName.text = app.name
 
-        // Set button text based on app's activation state
-        holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
+
+        if (from == "edit") {
+            holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
+        }
+        else {
+            databaseManager.isAppInDatabase(app) { isThere ->
+                if (isThere) {
+                    holder.toggleButton.text = "Remove"
+                } else {
+                    holder.toggleButton.text = "Add"
+                }
+            }
+        }
 
         // Toggle activation state when button is clicked
         holder.toggleButton.setOnClickListener {
-            app.active = !app.active
-            holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
+            if (from == "edit") {
+                app.active = !app.active
+                holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
 
-            val databaseManager = DatabaseManager.getInstance()
-            databaseManager.updateAppStateInDatabase(app)
+                databaseManager.updateAppStateInDatabase(app)
+            }
+            else {
+                databaseManager.isAppInDatabase(app) { isThere ->
+                    if (isThere) {
+                        databaseManager.removeApp(app)
+                    } else {
+                        databaseManager.addApp(App(true, app.logo, app.name))
+                    }
+                }
+            }
 
             notifyItemChanged(position) // Update the item to reflect the state change
         }
