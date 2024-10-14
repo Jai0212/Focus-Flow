@@ -27,10 +27,10 @@ class MainPage : AppCompatActivity() {
 
         val databaseManager = DatabaseManager.getInstance()
 
-        databaseManager.getAllApps { activeApps ->
+        databaseManager.getActiveApps { activeApps ->
             val rvBlockedAppsRecyclerView: RecyclerView = findViewById(R.id.rvBlockedAppsRecyclerView)
             rvBlockedAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            rvBlockedAppsRecyclerView.adapter = activeApps?.let { BlockedAppsRecyclerViewAdapter(it) }
+            rvBlockedAppsRecyclerView.adapter = BlockedAppsRecyclerViewAdapter(activeApps)
         }
 
         val imgMainPageAddApp: ImageView = findViewById(R.id.imgMainPageAddApp)

@@ -2,6 +2,7 @@ package com.example.focusflow
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -36,9 +37,11 @@ class SignUp : AppCompatActivity() {
         }
 //        val newUser = User("user@example.com", "pass", "John Doe",
 //            mutableListOf(
-//                App("Instagram", R.drawable.instagram, true),
-//                App("Snapchat", R.drawable.snapchat, true))
+//                App(true, R.drawable.instagram, "Instagram"),
+//                App(true, R.drawable.snapchat, "Snapchat"))
 //        )
+//
+//        val databaseManager = DatabaseManager.getInstance()
 //
 //        databaseManager.signUp(newUser) { success ->
 //            if (success) {

@@ -34,7 +34,7 @@ class EditPage : AppCompatActivity() {
         databaseManager.getAllApps { allApps ->
             val rvEditPage: RecyclerView = findViewById(R.id.rvEditPage)
             rvEditPage.layoutManager = LinearLayoutManager(this)
-            rvEditPage.adapter = allApps?.let { EditPageRecyclerViewAdapter(this, it) }
+            rvEditPage.adapter = EditPageRecyclerViewAdapter(this, allApps)
         }
     }
 }
