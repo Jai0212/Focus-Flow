@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FocusFlow"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
             android:name=".BlockedAppPage"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -23,7 +23,7 @@
         <activity
             android:name=".SignUp"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +33,8 @@
         <activity
             android:name=".LogIn"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat"></activity>
+            android:theme="@style/Theme.AppCompat" >
+        </activity>
         <activity
             android:name=".EditPage"
             android:exported="true"

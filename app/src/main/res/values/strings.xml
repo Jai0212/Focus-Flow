@@ -3,4 +3,6 @@
     <string name="title_activity_blocked_app_page">BlockedAppPage</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="blocked_app_page_title">$app.name$ has been blocked</string>
+    <string name="blocked_app_page_unblock_button">Click to unblock</string>
 </resources>

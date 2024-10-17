@@ -19,11 +19,10 @@ import com.example.focusflow.databinding.ActivityBlockedAppPageBinding
  */
 class BlockedAppPage : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBlockedAppPageBinding
+private lateinit var binding: ActivityBlockedAppPageBinding
     private lateinit var fullscreenContent: TextView
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
-
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
@@ -50,7 +49,6 @@ class BlockedAppPage : AppCompatActivity() {
     private var isFullscreen: Boolean = false
 
     private val hideRunnable = Runnable { hide() }
-
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -61,7 +59,6 @@ class BlockedAppPage : AppCompatActivity() {
             MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS)
             }
-
             MotionEvent.ACTION_UP -> view.performClick()
             else -> {
             }
@@ -73,8 +70,8 @@ class BlockedAppPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityBlockedAppPageBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+     binding = ActivityBlockedAppPageBinding.inflate(layoutInflater)
+     setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
