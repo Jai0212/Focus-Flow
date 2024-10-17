@@ -15,6 +15,12 @@
         android:theme="@style/Theme.FocusFlow"
         tools:targetApi="31">
         <activity
+            android:name=".BlockedAppPage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_blocked_app_page"
+            android:theme="@style/Theme.FocusFlow.Fullscreen" />
+        <activity
             android:name=".SignUp"
             android:exported="true"
             android:theme="@style/Theme.AppCompat">
@@ -27,8 +33,7 @@
         <activity
             android:name=".LogIn"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat">
-        </activity>
+            android:theme="@style/Theme.AppCompat"></activity>
         <activity
             android:name=".EditPage"
             android:exported="true"
@@ -36,7 +41,7 @@
         <activity
             android:name=".MainPage"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat"></activity>
+            android:theme="@style/Theme.AppCompat" />
     </application>
 
 </manifest>
