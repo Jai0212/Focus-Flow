@@ -41,8 +41,8 @@ class SudokuChallenge {
         // Example: Hide a random number of cells (between 20 and 40)
         val numCellsToHide = (20..40).random()
         repeat(numCellsToHide) {
-            val row = (0..8).random()
-            val col = (0..8).random()
+            val row = (0..<SUDOKU_SIZE).random()
+            val col = (0..<SUDOKU_SIZE).random()
             if (board[row][col] != 0) {
                 board[row][col] = 0
             } else {
@@ -53,8 +53,8 @@ class SudokuChallenge {
     }
 
     fun isSolved(): Boolean {
-        for (row in 0..8) {
-            for (col in 0..8) {
+        for (row in 0..<SUDOKU_SIZE) {
+            for (col in 0..<SUDOKU_SIZE) {
                 if (board[row][col] != solution[row][col]) {
                     return false
                 }
