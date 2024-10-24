@@ -1,6 +1,7 @@
 package com.example.focusflow
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,9 +30,17 @@ class EditPageRecyclerViewAdapter(
         val app = apps[position]
         val databaseManager = DatabaseManager.getInstance()
 
-        holder.appLogo.setImageResource(app.logo)
-        holder.appName.text = app.name
+        val appIcon = databaseManager.getAppIconFromPackage(app.packageName, context.packageManager)
 
+        if (appIcon != null) {
+            holder.appLogo.setImageDrawable(appIcon)
+        }
+        else {
+            Log.d("EDIT PAGE RECYCLER VIEW", "Skipped App: " + app.packageName)
+            return
+        }
+
+        holder.appName.text = app.name
 
         if (from == "edit") {
             holder.toggleButton.text = if (app.active) "Deactivate" else "Activate"
@@ -56,7 +65,7 @@ class EditPageRecyclerViewAdapter(
                         databaseManager.removeApp(app)
                         holder.toggleButton.text = "Add"
                     } else {
-                        databaseManager.addApp(App(true, app.logo, app.name, app.packageName))
+                        databaseManager.addApp(App(true, app.name, app.packageName))
                         holder.toggleButton.text = "Remove"
                     }
                 }

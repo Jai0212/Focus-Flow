@@ -3,10 +3,15 @@ package com.example.focusflow
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +37,7 @@ class MainPage : AppCompatActivity() {
         databaseManager.getActiveApps { activeApps ->
             val rvBlockedAppsRecyclerView: RecyclerView = findViewById(R.id.rvBlockedAppsRecyclerView)
             rvBlockedAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            rvBlockedAppsRecyclerView.adapter = BlockedAppsRecyclerViewAdapter(activeApps)
+            rvBlockedAppsRecyclerView.adapter = BlockedAppsRecyclerViewAdapter(this, activeApps)
         }
 
         val imgMainPageAddApp: ImageView = findViewById(R.id.imgMainPageAddApp)
@@ -69,5 +74,34 @@ class MainPage : AppCompatActivity() {
                 }
             }
         }
+
+        val tvMainPageTimeSaved: TextView = findViewById(R.id.tvMainPageTimeSaved)
+        val tvMainPageOpeningsPrevented: TextView = findViewById(R.id.tvMainPageOpeningsPrevented)
+
+        val user = databaseManager.getCurrUser()
+        val timeSaved: String = user?.timeSaved.toString() + " hours"
+        val openingsPrevented: String = user?.openingsPrevented.toString() + " "
+
+        // Create the spannable string for Time Saved
+        val timeSavedText = "Time Saved: $timeSaved"
+        val spannableTimeSaved = SpannableString(timeSavedText)
+        spannableTimeSaved.setSpan(
+            StyleSpan(Typeface.BOLD),
+            12, // Start index for timeSaved value
+            12 + timeSaved.length, // End index for timeSaved value
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        tvMainPageTimeSaved.text = spannableTimeSaved
+
+        // Create the spannable string for Openings Prevented
+        val openingsPreventedText = "Openings Prevented: $openingsPrevented"
+        val spannableOpeningsPrevented = SpannableString(openingsPreventedText)
+        spannableOpeningsPrevented.setSpan(
+            StyleSpan(Typeface.BOLD),
+            19, // Start index for openingsPrevented value
+            19 + openingsPrevented.length, // End index for openingsPrevented value
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        tvMainPageOpeningsPrevented.text = spannableOpeningsPrevented
     }
 }

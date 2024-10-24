@@ -1,18 +1,19 @@
 package com.example.focusflow
 
-import android.content.ContentValues.TAG
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlin.math.log
+import java.io.ByteArrayOutputStream
 
 class DatabaseManager private constructor() {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -211,7 +212,6 @@ class DatabaseManager private constructor() {
             return
         }
 
-        // Reference to the user's blockedApps list
         val blockedAppsRef = databaseReference.child("users").child(user.email.replace(".", ",")).child("blockedApps")
 
         blockedAppsRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -296,21 +296,16 @@ class DatabaseManager private constructor() {
     fun getInstalledApps(packageManager: PackageManager): List<App> {
         val appsList = mutableListOf<App>()
 
-        // Get the list of installed applications
         val packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
 
         for (packageInfo in packages) {
-            // Filter out system apps (if needed)
-            if (packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null &&
-                (packageInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0) {
+            if (packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null) {
 
-                // Get the app name, logo, and other details
                 val appName = packageManager.getApplicationLabel(packageInfo).toString()
-                val appIcon = packageInfo.icon  // App icon as resource ID
+
                 val packageName = packageInfo.packageName
                 val app = App(
-                    active = false,  // You can set this based on your logic
-                    logo = appIcon,  // App icon resource
+                    active = false,
                     name = appName,
                     packageName = packageName
                 )
@@ -381,5 +376,15 @@ class DatabaseManager private constructor() {
         }
     }
 
+    fun getAppIconFromPackage(packageName: String, packageManager: PackageManager): Drawable? {
+        return try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            packageManager.getApplicationIcon(applicationInfo)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            Log.e("FIREBASE","App not found with given package name")
+            null
+        }
+    }
 
 }

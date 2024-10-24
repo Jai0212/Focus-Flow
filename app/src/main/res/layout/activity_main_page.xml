@@ -61,7 +61,7 @@
             android:orientation="vertical"
             android:background="@drawable/rounded_corner"
             android:layout_margin="20dp"
-            android:padding="10dp"
+            android:padding="20dp"
             android:elevation="10dp">
 
             <TextView
@@ -69,21 +69,27 @@
                 android:layout_height="wrap_content"
                 android:text="Summary"
                 android:textColor="@color/black"
-                android:textSize="30sp"/>
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
+                android:id="@+id/tvMainPageTimeSaved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time Saved: "
+                android:text="Time Saved: 20 hours"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvMainPageOpeningsPrevented"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Openings Prevented: 54"
                 android:textSize="25sp"
                 android:textColor="@color/black"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Openings Prevented: "
-                android:textSize="25sp"
-                android:textColor="@color/black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +109,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Blocked Apps"
-                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textColor="#084A45"
                     android:textSize="30sp"
                     android:layout_margin="10dp"
                     android:layout_gravity="center"
@@ -130,11 +137,22 @@
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBlockedAppsRecyclerView"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:padding="10dp" />
+                android:layout_height="130dp"
+                app:cardElevation="6dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBlockedAppsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="6dp" />
+
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
 

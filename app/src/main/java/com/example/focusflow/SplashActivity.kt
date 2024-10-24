@@ -5,12 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.window.SplashScreen
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +25,15 @@ class SplashActivity : AppCompatActivity() {
                     if (user != null) {
                         databaseManager.setCurrUser(user)
                         startActivity(Intent(this, MainPage::class.java))
+                    } else {
+                        startActivity(Intent(this, LogIn::class.java))
                     }
+                    finish()
                 }
+            } else {
+                startActivity(Intent(this, LogIn::class.java))
+                finish()
             }
-
-            startActivity(Intent(this, LogIn::class.java))
-            finish()
         }, 500)
     }
 }
