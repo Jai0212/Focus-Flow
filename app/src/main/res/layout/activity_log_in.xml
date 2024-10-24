@@ -2,31 +2,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#f0f0f0">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:src="@drawable/focus_flow_logo_top_bottom"
+        android:contentDescription="Focus Flow Logo"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="-20dp"/>
 
     <EditText
         android:id="@+id/edtEmailLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="Email"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textColorHint="#888888" />
 
     <EditText
         android:id="@+id/edtPasswordLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textColorHint="#888888" />
 
     <Button
         android:id="@+id/btnLogIn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In" />
+        android:text="Log In"
+        android:textColor="#ffffff"
+        android:background="#00796B"
+        android:padding="12dp"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnSwitchSignUp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Don't have an account, Sign Up!"/>
+        android:text="Don't have an account? Sign Up!"
+        android:textColor="#00796B"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

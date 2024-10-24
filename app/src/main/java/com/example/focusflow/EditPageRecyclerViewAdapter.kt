@@ -38,11 +38,7 @@ class EditPageRecyclerViewAdapter(
         }
         else {
             databaseManager.isAppInDatabase(app) { isThere ->
-                if (isThere) {
-                    holder.toggleButton.text = "Remove"
-                } else {
-                    holder.toggleButton.text = "Add"
-                }
+                holder.toggleButton.text = if (isThere) "Remove" else "Add"
             }
         }
 
@@ -58,13 +54,15 @@ class EditPageRecyclerViewAdapter(
                 databaseManager.isAppInDatabase(app) { isThere ->
                     if (isThere) {
                         databaseManager.removeApp(app)
+                        holder.toggleButton.text = "Add"
                     } else {
-                        databaseManager.addApp(App(true, app.logo, app.name))
+                        databaseManager.addApp(App(true, app.logo, app.name, app.packageName))
+                        holder.toggleButton.text = "Remove"
                     }
                 }
             }
 
-            notifyItemChanged(position) // Update the item to reflect the state change
+//            notifyItemChanged(position)
         }
     }
 

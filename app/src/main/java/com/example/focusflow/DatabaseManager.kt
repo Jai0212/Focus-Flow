@@ -155,6 +155,10 @@ class DatabaseManager private constructor() {
         return currUser
     }
 
+    fun setCurrUser(user: User) {
+        currUser = user
+    }
+
     fun updateAppStateInDatabase(app: App) {
         val user = currUser
         if (user == null) {
@@ -270,7 +274,7 @@ class DatabaseManager private constructor() {
                 }
 
                 // Remove the specified app from the list
-                blockedAppsList.removeIf { it.name == appToRemove.name && it.logo == appToRemove.logo }
+                blockedAppsList.removeIf { it.packageName == appToRemove.packageName }
 
                 // Update the entire list in Firebase (replace the old one)
                 blockedAppsRef.setValue(blockedAppsList)
@@ -303,10 +307,12 @@ class DatabaseManager private constructor() {
                 // Get the app name, logo, and other details
                 val appName = packageManager.getApplicationLabel(packageInfo).toString()
                 val appIcon = packageInfo.icon  // App icon as resource ID
+                val packageName = packageInfo.packageName
                 val app = App(
                     active = false,  // You can set this based on your logic
                     logo = appIcon,  // App icon resource
-                    name = appName   // App name
+                    name = appName,
+                    packageName = packageName
                 )
                 appsList.add(app)
             }
@@ -345,5 +351,35 @@ class DatabaseManager private constructor() {
                 }
             })
     }
+
+    fun getUser(email: String, onComplete: (User?) -> Unit) {
+        // Get a reference to the "users" node in the database
+        val usersRef = databaseReference.child("users")
+
+        // Fetch all users from the "users" node
+        usersRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val snapshot = task.result
+                if (snapshot != null) {
+                    // Iterate over each child (user) in the snapshot
+                    for (userSnapshot in snapshot.children) {
+                        val storedUser = userSnapshot.getValue(User::class.java)
+                        // Check if the email matches
+                        if (storedUser?.email == email) {
+                            // User found, return the user instance
+                            onComplete(storedUser)
+                            return@addOnCompleteListener
+                        }
+                    }
+                }
+                Log.d("FIREBASE", "User Found")
+                onComplete(null)
+            } else {
+                Log.e("FIREBASE", "Unable to find user with given Email.")
+                onComplete(null)
+            }
+        }
+    }
+
 
 }

@@ -1,11 +1,13 @@
 package com.example.focusflow
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -46,6 +48,26 @@ class MainPage : AppCompatActivity() {
             val intent = Intent(this, EditPage::class.java)
             intent.putExtra("from", "edit")
             startActivity(intent)
+        }
+
+        val imgMainPageLogout: ImageView = findViewById(R.id.imgMainPageLogout)
+        imgMainPageLogout.setOnClickListener {
+            databaseManager.logOut { isSuccess ->
+                if (isSuccess) {
+                    Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show()
+
+                    val sharedPreferences = getSharedPreferences("curr_user_session", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear() // Remove all saved data
+                    editor.apply()
+
+                    val intent = Intent(this, LogIn::class.java)
+                    startActivity(intent)
+                }
+                else {
+                    Toast.makeText(this, "Error Logging Out", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

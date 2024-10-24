@@ -28,10 +28,14 @@ class EditPage : AppCompatActivity() {
 
         val tlEditPage: androidx.appcompat.widget.Toolbar = findViewById(R.id.tlEditPage)
 
-        val imgEditPageBackArrow: ImageView = findViewById(R.id.imgEditPageBackArrow)
-        imgEditPageBackArrow.setOnClickListener {
-            val intent = Intent(this, MainPage::class.java)
-            startActivity(intent)
+        val imgEditPageBack: ImageView = findViewById(R.id.imgEditPageBack)
+        imgEditPageBack.setOnClickListener {
+            startActivity(Intent(this, MainPage::class.java))
+        }
+
+        val imgEditPageLogo: ImageView = findViewById(R.id.imgEditPageLogo)
+        imgEditPageLogo.setOnClickListener {
+            startActivity(Intent(this, MainPage::class.java))
         }
 
         val databaseManager = DatabaseManager.getInstance()

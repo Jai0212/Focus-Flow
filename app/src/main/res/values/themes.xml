@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.FocusFlow" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.FocusFlow" parent="android:Theme.Material.Light.NoActionBar">
+    </style>
     <style name="Theme.FocusFlow.Fullscreen" parent="Theme.FocusFlow">
         <item name="android:actionBarStyle">@style/Widget.Theme.FocusFlow.ActionBar.Fullscreen
         </item>
@@ -12,5 +13,9 @@
     <style name="ThemeOverlay.FocusFlow.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+    
+    <style name="FocusFlow.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

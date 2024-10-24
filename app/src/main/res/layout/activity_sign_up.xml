@@ -2,37 +2,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#f0f0f0">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:src="@drawable/focus_flow_logo_top_bottom"
+        android:contentDescription="Focus Flow Logo"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="-20dp"/>
 
     <EditText
         android:id="@+id/edtNameSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="Name"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textColorHint="#888888" />
 
     <EditText
         android:id="@+id/edtEmailSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="Email"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textColorHint="#888888" />
 
     <EditText
         android:id="@+id/edtPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textColorHint="#888888" />
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up" />
+        android:text="Sign Up"
+        android:textColor="#ffffff"
+        android:background="#00796B"
+        android:padding="12dp"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnSwitchLogIn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Already have an account, Log In!"/>
+        android:text="Already have an account? Log In!"
+        android:textColor="#00796B"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.focusflow
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -47,6 +48,12 @@ class LogIn : AppCompatActivity() {
         databaseManager.logIn(User(email, password, "", mutableListOf())) { success ->
             if (success) {
                 Toast.makeText(this, "Log-In successful!", Toast.LENGTH_SHORT).show()
+
+                val sharedPreferences = getSharedPreferences("curr_user_session", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("curr_user_email", email)
+                editor.apply()
+
                 val intent = Intent(this, MainPage::class.java)
                 startActivity(intent)
             } else {

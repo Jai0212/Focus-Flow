@@ -12,7 +12,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="App Logo"
-        android:src="@drawable/instagram" /> <!-- Placeholder -->
+        android:src="@drawable/instagram" />
 
     <TextView
         android:id="@+id/tvAppName"
@@ -26,6 +26,11 @@
     <Button
         android:id="@+id/btnToggle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Activate" />
+        android:layout_height="40dp"
+        android:text="Activate"
+        android:textColor="#ffffff"
+        android:background="#074E46"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center" />
 </LinearLayout>
