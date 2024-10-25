@@ -5,4 +5,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="blocked_app_page_title">$app.name$ has been blocked</string>
     <string name="blocked_app_page_unblock_button">Click to unblock</string>
+    <string name="accessibility_service_description">This is accessibility service</string>
 </resources>

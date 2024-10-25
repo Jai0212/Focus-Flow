@@ -5,8 +5,8 @@ data class User(
     val password: String,
     val name: String,
     val blockedApps: MutableList<App>,
-    val timeSaved: Int = 0,
-    val openingsPrevented: Int = 0,
+    var timeSaved: Double = 0.0,
+    var openingsPrevented: Int = 1,
     val prevActivities: MutableList<String> = mutableListOf()
 ) {
     constructor() : this("", "", "", mutableListOf())

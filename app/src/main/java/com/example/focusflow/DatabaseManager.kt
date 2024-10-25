@@ -387,4 +387,64 @@ class DatabaseManager private constructor() {
         }
     }
 
+    fun isBlocked(appPackageName: String, callback: (Boolean) -> Unit) {
+        val user = currUser
+        if (user == null) {
+            Log.e("FIREBASE", "Null User")
+            callback(false)
+            return
+        }
+
+        val blockedAppsRef = databaseReference.child("users").child(user.email.replace(".", ",")).child("blockedApps")
+
+        blockedAppsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Check if blockedApps is currently a list
+                if (snapshot.exists()) {
+                    for (appSnapshot in snapshot.children) {
+                        val app = appSnapshot.getValue(App::class.java)
+                        // Check if the package name matches
+                        if (app != null && app.packageName == appPackageName && app.active) {
+                            callback(true) // App is blocked
+                            return
+                        }
+                    }
+                }
+                // If no match was found
+                callback(false) // App is not blocked
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("FIREBASE", "Failed to retrieve blocked apps: ${error.message}")
+                callback(false) // Return false on error
+            }
+        })
+    }
+
+    fun updateUserDetails() {
+        val user = currUser
+        if (user == null) {
+            Log.e("FIREBASE", "Null User")
+            return
+        }
+
+        val userRef = databaseReference.child("users").child(user.email.replace(".", ","))
+
+        val updates = hashMapOf<String, Any>(
+            "timeSaved" to (user.timeSaved + 0.25),
+            "openingsPrevented" to (user.openingsPrevented + 1)
+        )
+
+//        currUser!!.timeSaved += 0.25
+//        currUser!!.openingsPrevented += 1
+
+        userRef.updateChildren(updates)
+            .addOnSuccessListener {
+                Log.d("FIREBASE", "User details updated successfully: timeSaved = ${user.timeSaved + 0.25}, openingsPrevented = ${user.openingsPrevented + 1}")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FIREBASE", "Failed to update user details: ${exception.message}")
+            }
+    }
+
 }

@@ -1,14 +1,19 @@
 package com.example.focusflow
 
+import android.accessibilityservice.AccessibilityService
+import android.content.ComponentName
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.accessibility.AccessibilityManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,6 +38,14 @@ class MainPage : AppCompatActivity() {
         }
 
         val databaseManager = DatabaseManager.getInstance()
+
+        if (!isAccessibilityServiceEnabled(this, YourAccessibilityService::class.java)) {
+            Log.d("MainPage Accessibility", "Accessibility Service NOT Enabled")
+            promptEnableAccessibilityService(this)
+        }
+        else {
+            Log.d("MainPage Accessibility", "Accessibility Service Enabled")
+        }
 
         databaseManager.getActiveApps { activeApps ->
             val rvBlockedAppsRecyclerView: RecyclerView = findViewById(R.id.rvBlockedAppsRecyclerView)
@@ -103,5 +116,38 @@ class MainPage : AppCompatActivity() {
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         tvMainPageOpeningsPrevented.text = spannableOpeningsPrevented
+    }
+
+    fun isAccessibilityServiceEnabled(context: Context, service: Class<out AccessibilityService>): Boolean {
+
+        val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        val enabledServices = Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+        )
+
+        if (enabledServices.isNullOrEmpty()) {
+            Log.d("MainPage Accessibility", "No Services Enabled")
+            return false
+        }
+
+        val componentNames = enabledServices.split(":").toList()
+
+        Log.d("MainPage Accessibility Components", componentNames.toString())
+
+        val serviceName = "com.example.focusflow/" + service.name
+
+        for (componentName in componentNames) {
+            if (componentName.equals(serviceName, ignoreCase = true)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun promptEnableAccessibilityService(context: Context) {
+        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        context.startActivity(intent)
     }
 }
