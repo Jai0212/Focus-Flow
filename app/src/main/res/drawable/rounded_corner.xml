@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Background color of the LinearLayout -->
-    <solid android:color="#ABCDEF" /> <!-- Replace with your desired color -->
+    <solid android:color="#5edac8" /> <!-- Replace with your desired color -->
 
     <!-- Border properties -->
     <stroke

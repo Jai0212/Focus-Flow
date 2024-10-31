@@ -3,6 +3,7 @@ package com.example.focusflow
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.Data
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -59,7 +60,7 @@ class SignUp : AppCompatActivity() {
     private fun signUp() {
         val email = edtEmailSignUp.text.toString().trim()
         val password = edtPasswordSignUp.text.toString().trim()
-        val name = edtNameSignUp.toString().trim()
+        val name = edtNameSignUp.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()

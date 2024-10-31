@@ -8,13 +8,52 @@
     android:layout_height="match_parent"
     tools:context=".MainPage">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlMainPage"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#2a2a2a"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgMainPageLogout"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="-5dp"
+                android:src="@drawable/ic_logout"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/imgMainPageLogo"
+                android:layout_marginBottom="3dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/focus_flow_png_logo_only"
+                android:contentDescription="Focus Flow Logo" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tlMainPage">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +61,7 @@
             android:orientation="vertical"
             android:background="@drawable/rounded_corner"
             android:layout_margin="20dp"
-            android:padding="10dp"
+            android:padding="20dp"
             android:elevation="10dp">
 
             <TextView
@@ -30,25 +69,33 @@
                 android:layout_height="wrap_content"
                 android:text="Summary"
                 android:textColor="@color/black"
-                android:textSize="30sp"/>
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
+                android:id="@+id/tvMainPageTimeSaved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time Saved: "
+                android:text="Time Saved: 20 hours"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvMainPageOpeningsPrevented"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Openings Prevented: 54"
                 android:textSize="25sp"
                 android:textColor="@color/black"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Openings Prevented: "
-                android:textSize="25sp"
-                android:textColor="@color/black"/>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_margin="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -56,39 +103,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="blocked apps"
-                    android:textColor="@color/black"
+                    android:text="Blocked Apps"
+                    android:textStyle="bold"
+                    android:textColor="#084A45"
                     android:textSize="30sp"
+                    android:layout_margin="10dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"/>
 
                 <ImageView
+                    android:layout_gravity="center"
                     android:id="@+id/imgMainPageAddApp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/ic_add"
-                    android:layout_margin="10dp"/>
+                    android:layout_margin="5dp"/>
 
                 <Button
                     android:id="@+id/bMPedit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
                     android:text="Edit"
-                    android:padding="5dp"
+                    android:textColor="#ffffff"
+                    android:background="#074E46"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
                     android:layout_gravity="center" />
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBlockedAppsRecyclerView"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#784"/>
+                android:layout_height="130dp"
+                app:cardElevation="6dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBlockedAppsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="6dp" />
+
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
 
