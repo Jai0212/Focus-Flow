@@ -25,6 +25,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
+import java.io.File
 
 class MainPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +41,22 @@ class MainPage : AppCompatActivity() {
         }
 
         val databaseManager = DatabaseManager.getInstance()
+
+//        databaseManager.addAllPromptsFromFile(this)
+//        databaseManager.getAllPrompts { prompts ->
+//            prompts.forEach { prompt ->
+//                Log.d("prompt: ", prompt)
+//            }
+//        }
+
+// In your Activity or Fragment:
+        val py = Python.getInstance()
+        val pyScript = py.getModule("my_script")  // Python file (without the .py extension)
+        val result: PyObject = pyScript.callAttr("greet", "John")  // Calling the greet function
+
+        val message = result.toString()  // Convert result to string
+        println(message)  // Output: Hello, John!
+
 
         if (!isAccessibilityServiceEnabled(this, YourAccessibilityService::class.java)) {
             Log.d("MainPage Accessibility", "Accessibility Service NOT Enabled")

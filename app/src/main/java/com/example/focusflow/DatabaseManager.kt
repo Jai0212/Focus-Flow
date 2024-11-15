@@ -1,5 +1,6 @@
 package com.example.focusflow
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -14,6 +15,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class DatabaseManager private constructor() {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -445,6 +447,93 @@ class DatabaseManager private constructor() {
             .addOnFailureListener { exception ->
                 Log.e("FIREBASE", "Failed to update user details: ${exception.message}")
             }
+    }
+
+    fun addPrompt(prompt: String) {
+        // Get a reference to the "prompts" node in your database
+        val promptsRef = databaseReference.child("prompts")
+
+        // Generate a unique key for each prompt (optional, but useful if you want to store multiple prompts)
+        val newPromptRef = promptsRef.push()
+
+        // Set the prompt value in the database
+        newPromptRef.setValue(prompt)
+            .addOnSuccessListener {
+                // Successfully added prompt
+                Log.d("Firebase", "Prompt added successfully!")
+            }
+            .addOnFailureListener { e ->
+                // Failed to add prompt
+                Log.e("Firebase", "Failed to add prompt", e)
+            }
+    }
+
+    fun deleteAllPrompts() {
+        // Get a reference to the "prompts" node in your database
+        val promptsRef = databaseReference.child("prompts")
+
+        // Remove all data under the "prompts" node
+        promptsRef.removeValue()
+            .addOnSuccessListener {
+                // Successfully deleted all prompts
+                Log.d("Firebase", "All prompts deleted successfully!")
+            }
+            .addOnFailureListener { e ->
+                // Failed to delete prompts
+                Log.e("Firebase", "Failed to delete prompts", e)
+            }
+    }
+
+    fun getAllPrompts(callback: (List<String>) -> Unit) {
+        // Get a reference to the "prompts" node in your database
+        val promptsRef = databaseReference.child("prompts")
+
+        // Add a listener to retrieve all data under "prompts"
+        promptsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val promptsList = mutableListOf<String>()
+
+                // Iterate through each child under "prompts"
+                for (snapshot in dataSnapshot.children) {
+                    // Convert each prompt to a string and add it to the list
+                    val prompt = snapshot.getValue(String::class.java)
+                    if (prompt != null) {
+                        promptsList.add(prompt)
+                    }
+                }
+
+                // Return the list of prompts via the callback
+                callback(promptsList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("Firebase", "Error retrieving prompts", databaseError.toException())
+                // Return an empty list if there's an error
+                callback(emptyList())
+            }
+        })
+    }
+
+    fun addAllPromptsFromFile(context: Context, fileName: String = "prompts.txt") {
+        try {
+            // Open the file from assets
+            val inputStream = context.assets.open(fileName)
+
+            // Read all lines from the file into a list
+            val prompts = inputStream.bufferedReader().use { it.readLines() }
+
+            // Close the input stream after reading the file
+            inputStream.close()
+
+            // Loop through each prompt and add it to the database
+            for (prompt in prompts) {
+                addPrompt(prompt)
+            }
+
+            Log.d("Firebase", "All prompts added successfully from file!")
+        } catch (e: Exception) {
+            Log.e("Firebase", "Error reading prompts from file", e)
+        }
     }
 
 }
