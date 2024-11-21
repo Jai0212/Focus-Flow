@@ -16,6 +16,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
 import java.io.File
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class DatabaseManager private constructor() {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -512,6 +514,18 @@ class DatabaseManager private constructor() {
                 callback(emptyList())
             }
         })
+    }
+
+    fun getRandomPrompt(callback: (String?) -> Unit) {
+        getAllPrompts { promptsList ->
+            if (promptsList.isNotEmpty()) {
+                val randomIndex = Random.nextInt(promptsList.size)
+                val randomPrompt = promptsList[randomIndex]
+                callback(randomPrompt)
+            } else {
+                callback(null) // Handle empty list case
+            }
+        }
     }
 
     fun addAllPromptsFromFile(context: Context, fileName: String = "prompts.txt") {
