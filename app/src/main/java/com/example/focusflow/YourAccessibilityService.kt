@@ -19,7 +19,7 @@ class YourAccessibilityService : AccessibilityService() {
 
                     databaseManager.updateUserDetails()
 
-                    val launchIntent = Intent(this, MainPage::class.java)
+                    val launchIntent = Intent(this, BlockedAppPage::class.java)
                     launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(launchIntent)
                 }

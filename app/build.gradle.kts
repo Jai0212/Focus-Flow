@@ -62,11 +62,11 @@ chaquopy {
     defaultConfig {
         // Specify the path to your Python 3.x executable on macOS
         // Use conditional logic to set the buildPython path
-        buildPython = if (org.gradle.internal.os.OperatingSystem.current().isMacOsX) {
+        buildPython(if (org.gradle.internal.os.OperatingSystem.current().isMacOsX) {
             "/usr/local/bin/python3" // Path for macOS
         } else {
             "C:\\Users\\joefa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" // Path for Windows
-        }
+        })
         pip {
             install("scikit-learn")
             install("pandas")
