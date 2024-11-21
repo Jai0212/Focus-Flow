@@ -29,7 +29,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_blocked_app_page"
-            android:theme="@style/Theme.FocusFlow.Fullscreen" />
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".SignUp"
             android:exported="true"
