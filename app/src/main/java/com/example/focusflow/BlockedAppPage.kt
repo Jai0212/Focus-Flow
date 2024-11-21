@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.semantics.text
 import com.example.focusflow.databinding.ActivityBlockedAppPageBinding
 
 /**
@@ -87,6 +88,17 @@ private lateinit var binding: ActivityBlockedAppPageBinding
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+
+        val databaseManager = DatabaseManager.getInstance()
+        databaseManager.getRandomPrompt { randomPrompt: String? ->
+            if (randomPrompt != null) {
+                // Use the random prompt (e.g., display it in a TextView)
+                binding.promptTextView.text = randomPrompt
+            } else {
+                // Handle the case where no prompts were found
+                binding.promptTextView.text = "No prompts available."
+            }
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

@@ -45,6 +45,17 @@
                 android:text="@string/blocked_app_page_unblock_button" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/promptTextView"
+            android:layout_width="103dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="100dp"
+            android:text="placeholder_prompts_will_be_overriden"
+            android:textColor="?attr/fullscreenTextColor"
+            android:textSize="18sp" />
+
     </FrameLayout>
 
 </FrameLayout>
