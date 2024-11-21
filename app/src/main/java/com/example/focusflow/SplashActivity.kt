@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
                 databaseManager.getUser(userEmail) { user ->
                     if (user != null) {
                         databaseManager.setCurrUser(user)
-                        startActivity(Intent(this, BlockedAppPage::class.java))
+                        startActivity(Intent(this, MainPage::class.java))
                     } else {
                         startActivity(Intent(this, LogIn::class.java))
                     }
