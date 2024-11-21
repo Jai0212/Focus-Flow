@@ -89,6 +89,13 @@ private lateinit var binding: ActivityBlockedAppPageBinding
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
 
+        val receivedValue = intent.getStringExtra("appName") // TODO This is the app name
+        // that is blocked, needs to be replaced with text
+        if (receivedValue != null) {
+            // TODO This means error, no app name passed
+        }
+        // TODO the unblock button should appear after like 3 seconds
+
         val databaseManager = DatabaseManager.getInstance()
         databaseManager.getRandomPrompt { randomPrompt: String? ->
             if (randomPrompt != null) {
