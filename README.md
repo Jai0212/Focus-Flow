@@ -1,5 +1,7 @@
 # Focus Flow
 
+<img width="200" alt="Focus Flow Logo" src="https://github.com/user-attachments/assets/95af2975-0bf1-4c5f-a74c-134f8740bb92" />
+
 Focus Flow is an app designed to promote healthier digital habits by reducing impulsive app usage 
 and screen time. By leveraging principles of Human-Computer Interaction (HCI), intuitive UI/UX 
 design, and behavior modification techniques, Focus Flow encourages users to adopt better digital 
@@ -12,6 +14,8 @@ and make healthier choices.
 This project is part of a digital well-being research initiative focused on identifying the most 
 effective prompts to help users reduce screen time and rethink impulsive app usage.
 
+<img width="200" alt="Block Page" src="https://github.com/user-attachments/assets/8b2806dc-f184-4bf3-affa-c7bb9b0e6f6c" />
+<img width="200" alt="List Page" src="https://github.com/user-attachments/assets/bd60c947-df47-482d-af7b-cf8df95fb4de" />
 
 ## Features
 
@@ -36,6 +40,9 @@ effective prompts to help users reduce screen time and rethink impulsive app usa
 - **Human-Computer Interaction (HCI) Principles**: The app applies HCI principles to design a seamless and user-friendly experience.
 - **UI/UX Design**: Intuitive, minimalistic design elements enhance usability and promote healthy app interaction.
 
+
+<img width="200" alt="Block Page" src="https://github.com/user-attachments/assets/de33b3a2-6ac3-439a-94a0-c2e46ae16856" />
+<img width="200" alt="Block Page" src="https://github.com/user-attachments/assets/5170d0bd-58d3-4aaf-b946-24688e6a4598" />
 
 ## Acknowledgement
 This project was developed by:
