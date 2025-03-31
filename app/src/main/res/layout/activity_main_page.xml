@@ -153,8 +153,52 @@
 
             </androidx.cardview.widget.CardView>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvWeeklyGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Weekly Goal:"
+                android:textStyle="bold"
+                android:textColor="#084A45"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tvHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 hours"
+                android:textStyle="bold"
+                android:textColor="#BA2B20"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <EditText
+                android:id="@+id/etHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:inputType="number"
+                android:textSize="30sp"/>
 
         </LinearLayout>
+
 
     </LinearLayout>
 

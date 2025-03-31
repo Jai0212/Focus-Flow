@@ -13,8 +13,12 @@ import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.View
 import android.view.accessibility.AccessibilityManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -135,6 +139,41 @@ class MainPage : AppCompatActivity() {
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         tvMainPageOpeningsPrevented.text = spannableOpeningsPrevented
+
+        val tvHours: TextView = findViewById(R.id.tvHours)
+        val etHours: EditText = findViewById(R.id.etHours)
+
+        // When the user clicks on the "0 hours" TextView
+        tvHours.setOnClickListener {
+            // Hide the TextView and show the EditText
+            tvHours.visibility = View.GONE
+            etHours.visibility = View.VISIBLE
+
+            // Set the EditText's text to the current value
+            etHours.setText(tvHours.text)
+
+            // Focus and show the keyboard
+            etHours.requestFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(etHours, InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        etHours.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                // Hide the EditText and show the updated TextView
+                val newGoal = etHours.text.toString()
+                tvHours.text = "$newGoal hours"  // Set the new value
+                tvHours.visibility = View.VISIBLE
+                etHours.visibility = View.GONE
+
+                // Hide the keyboard
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     fun isAccessibilityServiceEnabled(context: Context, service: Class<out AccessibilityService>): Boolean {

@@ -2,15 +2,21 @@ package com.example.focusflow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.compose.ui.semantics.text
 import com.example.focusflow.databinding.ActivityBlockedAppPageBinding
 
@@ -20,9 +26,9 @@ import com.example.focusflow.databinding.ActivityBlockedAppPageBinding
  */
 class BlockedAppPage : AppCompatActivity() {
 
-private lateinit var binding: ActivityBlockedAppPageBinding
-    private lateinit var fullscreenContent: TextView
-    private lateinit var fullscreenContentControls: LinearLayout
+    private lateinit var binding: ActivityBlockedAppPageBinding
+    private lateinit var fullscreenContent: FrameLayout
+    private lateinit var fullscreenContentControls: Button
     private val hideHandler = Handler(Looper.myLooper()!!)
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -71,8 +77,8 @@ private lateinit var binding: ActivityBlockedAppPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityBlockedAppPageBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+         binding = ActivityBlockedAppPageBinding.inflate(layoutInflater)
+         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -82,28 +88,62 @@ private lateinit var binding: ActivityBlockedAppPageBinding
         fullscreenContent = binding.fullscreenContent
         fullscreenContent.setOnClickListener { toggle() }
 
-        fullscreenContentControls = binding.fullscreenContentControls
+        fullscreenContentControls = binding.btnBlockedPageUnblock
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+        binding.btnBlockedPageUnblock.setOnTouchListener(delayHideTouchListener)
 
-        val receivedValue = intent.getStringExtra("appName") // TODO This is the app name
-        // that is blocked, needs to be replaced with text
-        if (receivedValue != null) {
+        val receivedValueAppName = intent.getStringExtra("appName")
+        val receivedValueAppPackage = intent.getStringExtra("appPackage")
+        if (receivedValueAppPackage == null || receivedValueAppName == null) {
+            Log.e("ERROR BLOCKED PAGE", "No App Opened")
             // TODO This means error, no app name passed
         }
+
+        binding.tvBlockedPageAppName.text = receivedValueAppName + " has been blocked"
+
         // TODO the unblock button should appear after like 3 seconds
 
         val databaseManager = DatabaseManager.getInstance()
         databaseManager.getRandomPrompt { randomPrompt: String? ->
             if (randomPrompt != null) {
+                Log.d("DEBUG", randomPrompt)
                 // Use the random prompt (e.g., display it in a TextView)
-                binding.promptTextView.text = randomPrompt
+                binding.tvBlockedPagePrompt.text = randomPrompt
             } else {
                 // Handle the case where no prompts were found
-                binding.promptTextView.text = "No prompts available."
+                binding.tvBlockedPagePrompt.text = "No prompts available."
+            }
+        }
+
+        binding.btnBlockedPageReturn.setOnClickListener {
+            // TODO update dataset
+            val intent = Intent(this, MainPage::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnBlockedPageUnblock.setOnClickListener {
+            // TODO update dataset
+            val intent = receivedValueAppPackage?.let { it1 ->
+                packageManager.getLaunchIntentForPackage(
+                    it1
+                )
+            }
+
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+                val serviceIntent = Intent(this, YourAccessibilityService::class.java)
+                serviceIntent.putExtra("removeFromWhitelist", receivedValueAppPackage)
+                startService(serviceIntent)
+            } else {
+                // If the app is not available, open it in the browser or show a message
+                Toast.makeText(this, "App not found, opening in browser", Toast.LENGTH_SHORT).show()
+                val fallbackIntent = Intent(this, MainPage::class.java)
+                startActivity(fallbackIntent)
             }
         }
     }
